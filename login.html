@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+  <html lang="en">
+
+   <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login Page</title>
+ 
+        <style>
+           body {
+                  font-family: Arial, sans-serif;
+                  background-color: #16171b;
+                  margin: 0;
+                  padding: 0;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  height: 100vh;
+                  
+                }
+
+            .login-container {
+              background-color:#222327;
+              border-radius: 8px;
+             box-shadow: 0 0 10px rgba(88, 2, 2, 0.159);
+              padding: 20px;
+               width: 300px;
+               color: #ccc;
+             }
+
+           .login-container h2 {
+              text-align: center;
+              }
+
+           .login-form {
+             display: flex;
+             flex-direction: column;
+             }
+
+           .form-group {
+              margin-bottom: 15px;
+            }
+
+            .form-group label {
+                font-weight: bold;
+                 margin-bottom: 5px;
+                }
+
+           .form-group input {
+             width: 100%;
+             padding: 8px;
+             box-sizing: border-box;
+             border: 1px solid #ccc;
+             border-radius: 10px;
+            }
+
+            .form-group input[type="submit"] {
+             background-color:#a73839;
+             color:black;
+             cursor: pointer;
+             border:none
+            }
+
+            .form-group input[type="submit"]:hover {
+             background-color:#a73839;
+            }
+        </style>
+    </head>
+
+    <body>
+
+     <div class="login-container">
+          <h2>Login</h2>
+          <form class="login-form" action="process_login.php" method="POST" onsubmit="return
+          validateForm()">
+             <div class="form-group">
+                 <label for="username">User Name:</label>
+                 <input type="text" id="username" name="username" required>
+              </div>
+
+             <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+             </div>
+
+             <div class="form-group">
+                <input type="submit" value="Login">
+             </div>
+            </form>
+     </div>
+
+   <script>
+    function validateForm() {
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    if (username === '' || password === '') {
+    alert('Please enter both username and password.');
+    return false;
+   }
+
+   return true; 
+   }
+</script>
+
+ <script src="https://apis.google.com/js/api.js"></script>
+ <script>
+ 
+    gapi.load('client', initClient);
+
+    function initClient() {
+    gapi.client.init({
+    apiKey: 'AIzaSyBp4Vy3n9o9osQ52KGaaxDnfgDC858f80E',
+    clientId: '917671272173-3srdoi4s1fan0di2i734864ke3p1i550.apps.googleusercontent.com',
+    discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+    scope: "https://www.googleapis.com/auth/spreadsheets.readonly",
+    }).then(() => {
+
+    });
+ }
+
+    function attemptLogin() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: 'YOUR_SPREADSHEET_ID',
+    range: 'Sheet1',
+    }).then(response => {
+    const data = response.result.values;
+
+    for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    if (row[0] === username && row[1] === password) {
+    alert('Login successful!');
+     return;
+    }
+   }
+
+   alert('Invalid username or password.');
+   });
+   }
+   </script>
+
+</body>
+
+</html>
